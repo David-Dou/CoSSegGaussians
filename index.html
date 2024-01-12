@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content=" Sparse Semantic Supervised Tensorial Radiance Field (3S-TensoRF)">
+  <meta name="keywords" content="Semanrtic NeRF, 3S-TensoRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CoSSegGaussians: Compact and Swift Scene Segmenting 3D Gaussians</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/model_title.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/app.js"></script>
+  <script src="./static/js/video_comparison.js"></script>
+  <link rel="stylesheet" href="./static/css/dics.original.css">
+  <script src="./static/js/event_handler.js"></script>
+  <script src="./static/js/dics.original.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered is-fullwidth">
+        <div class="column has-text-centered is-full ">
+          <h1 class="title is-3 publication-title">CoSSegGaussians: Compact and Swift Scene Segmenting 3D Gaussians</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              Bin Dou<sup>1</sup>,</span>
+            <span class="author-block">
+              Tianyu Zhang<sup>1</sup>,
+            </span>
+            <span class="author-block">
+              Yongjia Ma<sup>1</sup>,</span>
+            
+            <span class="author-block">
+              Zejian Yuan<sup>1</sup>
+            </span>
+            <!-- <span class="author-block">
+              <a href="https://www.danbgoldman.com">Dan B Goldman</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://homes.cs.washington.edu/~seitz/">Steven M. Seitz</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://www.ricardomartinbrualla.com">Ricardo Martin-Brualla</a><sup>2</sup>
+            </span><! -->
+          </div> 
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Xi’an Jiaotong University</span>
+            <!-- <span class="author-block"><sup>2</sup>Google Research</span> -->
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code(Coming soon)</span>
+                  </a>
+              </span>
+              <!-- Dataset Link.
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+      
+          <video class="video" width="100%" id="xyalias6" loop playsinline autoplay muted src="static/videos/rgb_vs_feature.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
+          <canvas height=0 class="videoMerge" id="xyalias6Merge"></canvas>
+      
+          <h2 class="subtitle has-text-centered" style="margin-top: 15px">
+             We present a color and feature comparison for Replica scene.
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- overview video -->
+<!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/sem.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        </span> Overview video
+      </h2>
+    </div>
+  </div>
+</section> -->
+
+
+<!-- <section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-chair-tp">
+          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/chair-tp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-shiba">
+          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/shiba.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-fullbody">
+          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/fullbody.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-blueshirt">
+          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/blueshirt.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mask">
+          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mask.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-coffee">
+          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/coffee.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ -->
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We propose Compact and Swift Segmenting 3D Gaussians(CoSSegGaussians), a method for compact 3D-consistent scene segmentation at fast rendering speed with only RGB images input.  
+Previous NeRF-based 3D segmentation methods have relied on implicit or voxel neural scene representation and ray-marching volume rendering which are time consuming.
+Recent 3D Gaussian Splatting significantly improves the rendering speed, however, existing Gaussians-based segmentation methods(eg: Gaussian Grouping) fail to provide compact segmentation masks especially in zero-shot segmentation, which is mainly caused by the lack of robustness and compactness for straightforwardly assigning learnable parameters to each Gaussian when encountering inconsistent 2D machine-generated labels.
+Our method aims to achieve compact and reliable zero-shot scene segmentation swiftly by mapping fused spatial and semantically meaningful features for each Gaussian point with a shallow decoding network.
+Specifically, our method firstly optimizes Gaussian points' position, convariance and color attributes under the supervision of RGB images. After Gaussian Locating, we distill multi-scale DINO features extracted from images through unprojection to each Gaussian, which is then incorporated with spatial features from the fast point features processing network, i.e. RandLA-Net. Then the shallow decoding MLP is applied to the multi-scale fused features to obtain compact segmentation.
+Experimental results show that our model can perform high-quality zero-shot scene segmentation, 
+as our model outperforms other segmentation methods on both semantic and panoptic segmentation task,meanwhile consumes approximately only 10% segmenting time compared to NeRF-based segmentation.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  
+      <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered is-multiline">
+      <div class="column is-four-fifths ">
+        <h2 class="title is-3">Methods</h2>
+        <div class="content has-text-justified">
+          <p>
+            Given posed RGB images 
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mo fence="false" stretchy="false">{</mo>
+              <mi>I</mi>
+              <mo fence="false" stretchy="false">}</mo>
+            </math> 
+            of a scene with part of corresponding segmentation annotations <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mo fence="false" stretchy="false">{</mo>
+              <mi>S</mi>
+              <mo fence="false" stretchy="false">}</mo>
+            </math>, we aim to build a
+            scene representational model to achieve 3D-consistent novel-view panoptic segmentation, while using supervisory labels
+            from as few viewpoints as possible, as shown in the figure below
+            provides an overview of our model’s architecture, which mainly
+            consists of two parts: tensorial scene representation(focusing
+            on multi-scale knowledge distillation as segmentation prior)
+            and implicit segmentation field(for postprocessing distilled fea-
+            tures and mapping them to panoptic segmentation).
+          </p>
+          
+        </div>
+      </div>
+      <p>
+        <!-- <img src="./static/images/model.png"
+        class="interpolation-image"
+        alt="Interpolate start reference image."/> -->
+        <figure class="image is-9by6">
+          <img src="./static/images/model.svg" alt="Interpolate start reference image.">
+        </figure>
+      </p>
+    </div>
+      <!--/Methods -->
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div> -->
+      </div>
+    </div> 
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Animation</h2>
+
+        <!-- Interpolating. -->
+        <!-- <h3 class="title is-4">Semantic label</h3> -->
+        <!-- <div class="content has-text-justified">
+          <p>
+              Use the slider here to observe semantic labels from different perspectivesin of four methods with 5% sparse labels.
+          </p>
+         </div> -->
+        <!-- <div class="column is-vcentered interpolation-panel is-multiline">
+          <div class="columns is-centered ">
+            <div class="column is-3 is-offset-0 ">
+              <div id="GT-image-wrapper">
+                Loading...
+              </div>
+              <p class="has-text-centered has-text-weight-bold is-size-5">Ground Truth</p>
+            </div>
+          </div>
+          <div class="column interpolation-video-column">
+            <div id="interpolation-image-wrapper">
+              Loading...
+            </div>
+            <div class="columns is-centered is-multiline">
+              
+              <div class="column is-one-fifth">
+                <p class="has-text-centered has-text-weight-bold is-size-5">SAM</p>
+              </div>
+              <div class="column is-one-fifth">
+                <p class="has-text-centered has-text-weight-bold is-size-5">Semantic-NeRF</p>
+              </div>
+              <div class="column is-one-fifth">
+                <p class="has-text-centered has-text-weight-bold is-size-5">DM-NeRF</p>
+              </div>
+              <div class="column is-one-fifth">
+                <p class="has-text-centered has-text-weight-bold is-size-5">Object-SDF</p>
+              </div>
+              <div class="column is-one-fifth">
+                <p class="has-text-centered has-text-weight-bold is-size-5">Ours</p>
+              </div>
+              <div class="column is-1">
+              </div>
+            </div>
+            <input class="slider is-full-width is-large is-info"
+                   id="interpolation-slider"
+                   step="1" min="0" max="100" value="0" type="range">
+          </div>
+           <div class="column is-3 has-text-centered"> -->
+            <!-- <img src="./static/images/interpolate_end.jpg"
+                 class="interpolation-image"
+                 alt="Interpolation end reference image."/>
+            <p class="is-bold">End Frame</p> -->
+          <!-- </div> -->
+        <!-- </div> -->
+        <!-- <br/> -->
+        <!--/ Interpolating. -->
+        <!-- <div class="columns is-vcentered interpolation-panel  ">
+          <div class="column is-one-quarter ">
+            <div id="GT-image-wrapper">
+              Loading...
+            </div>
+            <p class="has-text-centered has-text-weight-bold is-size-5">Ground Truth</p>
+          </div>
+          <div class="column is-three-quarter  is-multiline">
+            <div class="columns  ">
+              <div class="column is-one-third is-offset-0 ">
+                <div id="MaskDINO-image-wrapper">
+                  Loading...
+                </div>
+                <p class="has-text-centered has-text-weight-bold is-size-5">MaskDINO</p>
+              </div>
+              <div class="column is-one-third is-offset-0 ">
+                <div id="TensoRF_LP-image-wrapper">
+                  Loading...
+                </div>
+                <p class="has-text-centered has-text-weight-bold is-size-5">TensoRF+LP</p>
+              </div>
+              <div class="column is-one-third is-offset-0 ">
+                <div id="Semantic-image-wrapper">
+                  Loading...
+                </div>
+                <p class="has-text-centered has-text-weight-bold is-size-5">Semantic-NeRF</p>
+              </div>
+            </div>
+            <div class="columns ">
+              <div class="column is-one-third is-offset-0 ">
+                <div id="DM-image-wrapper">
+                  Loading...
+                </div>
+                <p class="has-text-centered has-text-weight-bold is-size-5">DM-NeRF</p>
+              </div>
+              <div class="column is-one-third is-offset-0 ">
+                <div id="Panoptic-image-wrapper">
+                  Loading...
+                </div>
+                <p class="has-text-centered has-text-weight-bold is-size-5">Panoptic-Lifting</p>
+              </div>
+              <div class="column is-one-third is-offset-0 ">
+                <div id="Ours-image-wrapper">
+                  Loading...
+                </div>
+                <p class="has-text-centered has-text-weight-bold is-size-5">Ours</p>
+              </div>
+            </div>
+            <input class="slider is-full-width is-large is-info"
+            id="interpolation-slider"
+            step="1" min="0" max="180" value="0" type="range">
+          </div>
+        </div> -->
+         
+        <!-- Re-rendering. -->
+        <h3 class="title is-4">Editing and Inpainting</h3>
+        <div class="content has-text-justified">
+          <p>
+            We can also animate the scene of editing and inpainting .Use the slider here to see the editing results.
+          </p>
+        </div>
+        <h4 class="title is-5">office2</h4>
+        <div class="column is-multiline is-vcentered interpolation-panel ">
+          <div class="columns is-vcentered interpolation-panel ">
+            <div class="column is-3 has-text-centered">
+              
+              <img src="./static/editing/gt.png"
+                  alt="GT-image"
+                  class="image "/>
+                <p class="is-size-5 has-text-centered has-text-weight-bold">Ground Truth</p>
+            </div>
+            <!-- <div class="column is-3 has-text-centered">
+              <p class="is-size-5 has-text-centered has-text-weight-bold ">DM-NeRF</p>
+              <div id="Editing-image2-wrapper">
+                Loading...
+              </div>
+            </div> -->
+            <div class="column is-8 has-text-centered ">
+              
+              <div id="Editing-image1-wrapper">
+                Loading...
+              </div>
+              <div class="columns is-centered ">
+                <div class="column is-4">
+                  <p class="has-text-centered has-text-weight-bold is-size-5">DM-NeRF</p>
+                </div>
+                <div class="column is-4">
+                  <p class="has-text-centered has-text-weight-bold is-size-5">Ours(Edit)</p>
+                </div>
+                <div class="column is-4">
+                  <p class="has-text-centered has-text-weight-bold is-size-5">Ours(Inpaint)</p>
+                </div>
+              </div>
+              <p>
+                <input class="slider is-full-width is-large is-info"
+                    id="Editing-slider"
+                    step="1" min="0" max="4" value="0" type="range">
+              </p>
+            </div>
+
+          </div>
+        </div>
+        <h4 class="title is-5">room0</h4>
+        <div class="column is-multiline is-vcentered interpolation-panel ">
+          <div class="columns is-vcentered interpolation-panel ">
+            <div class="column is-3 has-text-centered">
+              
+              <img src="./static/editing/gt_room0.png"
+                  alt="GT-image"
+                  class="image "/>
+              <p class="is-size-5 has-text-centered has-text-weight-bold">Ground Truth</p>
+            </div>
+            <!-- <div class="column is-3 has-text-centered">
+              <p class="is-size-5 has-text-centered has-text-weight-bold ">DM-NeRF</p>
+              <div id="Editing-image2-wrapper">
+                Loading...
+              </div>
+            </div> -->
+            <div class="column is-8 has-text-centered ">
+              
+              <div id="Editing-image2-wrapper">
+                Loading...
+              </div>
+              <div class="columns is-centered ">
+                <div class="column is-4">
+                  <p class="has-text-centered has-text-weight-bold is-size-5">DM-NeRF</p>
+                </div>
+                <div class="column is-4">
+                  <p class="has-text-centered has-text-weight-bold is-size-5">Ours(Edit)</p>
+                </div>
+                <div class="column is-4">
+                  <p class="has-text-centered has-text-weight-bold is-size-5">Ours(Inpaint)</p>
+                </div>
+              </div>
+              <p>
+                <input class="slider is-full-width is-large is-info"
+                    id="Editing-slider1"
+                    step="1" min="0" max="4" value="0" type="range">
+              </p>
+            </div>
+
+          </div>
+        </div>  
+        <br/>
+        
+        <h3 class="title is-4">Erasing</h3>
+        <div class="content has-text-justified ">
+          <p>
+            We can also animate the scene of erasing the object .Use the button here to see the erasing results.
+          </p>
+        </div>
+        <h4 class="title is-5">office3</h4>
+        <div class="columns is-vcentered interpolation-panel">
+          <!-- <button id="change-image-btn" class="button ">Impainting</button> -->
+          <div class="column is-3 has-text-centered ">
+            
+            <img src="./static/editing/38_rgb_gt.png"
+                 alt="GT-image"
+                 class="image is-512x512"/>
+            <p class="is-size-5 has-text-centered has-text-weight-bold">Ground Truth</p>
+          </div>
+          <div class="column is-8 has-text-centered">
+            
+            <img id = "output-img1"
+                src="./static/editing/erasing_gt.png"
+                alt="Erasing-image"
+                class="image is-648x648"/>
+            <div class="columns is-centered ">
+              <div class="column is-4">
+                <p class="has-text-centered has-text-weight-bold is-size-5">DM-NeRF</p>
+              </div>
+              <div class="column is-4">
+                <p class="has-text-centered has-text-weight-bold is-size-5">Ours(Edit)</p>
+              </div>
+              <div class="column is-4">
+                <p class="has-text-centered has-text-weight-bold is-size-5">Ours(Inpaint)</p>
+              </div>
+            </div>
+            <button id="change-image-btn1" class="button is-medium is-info has-text-weight-bold">Erasing</button> 
+          </div>
+          <!-- <div class="content has-text-justified is-multiline">
+            <div class="column is-narrow">
+              <p class="is-size-4 has-text-centered has-text-weight-bold">Erasing</p>
+            </div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column">
+              <p class="is-size-4 has-text-centered has-text-weight-bold">Inpainting</p>
+            </div>
+          </div> -->
+          
+        </div> 
+        <h4 class="title is-5">room0</h4>
+        <div class="columns is-vcentered interpolation-panel">
+          <!-- <button id="change-image-btn" class="button ">Impainting</button> -->
+          <div class="column is-3 has-text-centered ">
+            
+            <img src="./static/editing/7_rgb_gt.png"
+                 alt="GT-image"
+                 class="image is-512x512"/>
+            <p class="is-size-5 has-text-centered has-text-weight-bold">Ground Truth</p>
+          </div>
+          <div class="column is-8 has-text-centered">
+            
+            <img id = "output-img2"
+                src="./static/editing/erasing_gt_room0.png"
+                alt="Erasing-image"
+                class="image is-648x648"/>
+            <div class="columns is-centered ">
+              <div class="column is-4">
+                <p class="has-text-centered has-text-weight-bold is-size-5">DM-NeRF</p>
+              </div>
+              <div class="column is-4">
+                <p class="has-text-centered has-text-weight-bold is-size-5">Ours(Edit)</p>
+              </div>
+              <div class="column is-4">
+                <p class="has-text-centered has-text-weight-bold is-size-5">Ours(Inpaint)</p>
+              </div>
+            </div>
+            <button id="change-image-btn2" class="button is-medium is-info has-text-weight-bold">Erasing</button> 
+          </div>
+          <!-- <div class="content has-text-justified is-multiline">
+            <div class="column is-narrow">
+              <p class="is-size-4 has-text-centered has-text-weight-bold">Erasing</p>
+            </div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column is-narrow"></div>
+            <div class="column">
+              <p class="is-size-4 has-text-centered has-text-weight-bold">Inpainting</p>
+            </div>
+          </div> -->
+          
+        </div> 
+        <h3 class="title is-4">DINO Feature Fields</h3>
+        <div class="content has-text-justified">
+          <p>
+            We visualize feature fields distilled from DINO. Scenes are from Replica and Scannet.
+          </p>
+        </div>
+        <!--/ DINO. -->
+        <div class="columns is-vcentered ">
+          <!-- <button id="change-image-btn" class="button ">Impainting</button> -->
+          <div class="column is-6 has-text-centered ">
+            <img src="./static/dino/Replica.jpg"
+                 alt="DINO-image"
+                 class="image is-512x512"/>
+            <div class="columns is-centered is-multiline">
+              <div class="column is-3">
+                <p class="has-text-centered has-text-weight-bold is-size-5">Replica</p>
+              </div>
+            </div>
+          </div>
+        
+        
+          <!-- <button id="change-image-btn" class="button ">Impainting</button> -->
+          <div class="column is-6 has-text-centered ">
+            <img src="./static/dino/Scannet.jpg"
+                  alt="DINO-image"
+                  class="image is-512x512"/>
+            <div class="columns is-centered is-multiline">
+              <div class="column is-3">
+                <p class="has-text-centered has-text-weight-bold is-size-5">Scannet</p>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <!-- dino-VIDOE -->
+
+        <!-- <h3 class="title is-4">DINO Video</h3>
+        <div class="content has-text-justified">
+          <p>
+            We visualize feature fields distilled from DINO.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-3">
+            <h5 class="title is-6 is-center">Replica-office_0</h5>
+            <div class="content">
+              <video width="320" height="240" autoplay muted loop playsinline height="70%">
+                <source src="./static/dino/office0_rgb.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div> 
+          / Visual Effects. -->
+    
+          <!-- Matting. -->
+          <!-- <div class="column is-3">
+              <h5 class="title is-6 is-center">(Dino field)</h5>
+              <div class="content">
+                
+                <video width="320" height="240" autoplay muted loop playsinline height="70%">
+                  <source src="./static/dino/office0_dino.mp4" type="video/mp4">
+                </video>
+              </div>
+          </div>
+          <div class="column is-3">
+            <h5 class="title is-6 is-center">Replica-office_2</h5>
+            <div class="content">
+              <video width="320" height="240" autoplay muted loop playsinline height="70%">
+                <source src="./static/dino/office2_rgb.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          
+          <div class="column is-3">
+            <h5 class="title is-6 is-center">(Dino field)</h5>
+            <div class="content">
+              <video width="320" height="240" autoplay muted loop playsinline height="70%">
+                <source src="./static/dino/office2_dino.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          
+        </div> --> 
+
+        <!-- <div class="columns is-centered">
+          <div class="column is-3">
+            <h5 class="title is-6 is-center">Scene0010</h5>
+            <div class="content">
+              <video width="320" height="240" autoplay muted loop playsinline height="70%">
+                <source src="./static/dino/scene0010_rgb.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div> 
+          <!--/ Visual Effects. -->
+    
+          <!-- Matting. -->
+          <!-- <div class="column is-3">
+              <h5 class="title is-6 is-center">(Dino field)</h5>
+              <div class="content">
+                <video width="320" height="240" autoplay muted loop playsinline height="70%">
+                  <source src="./static/dino/scene0010_dino.mp4" type="video/mp4">
+                </video>
+              </div>
+          </div>
+        
+
+          <div class="column is-3">
+            <h5 class="title is-6 is-center">Scene0038</h5>
+            <div class="content">
+              <video width="320" height="240" autoplay muted loop playsinline height="70%">
+                <source src="./static/dino/scene0038_rgb.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+          <div class="column is-3">
+            <h5 class="title is-6 is-center">(Dino field)</h5>
+            <div class="content">
+              <video width="320" height="240" autoplay muted loop playsinline height="70%">
+                <source src="./static/dino/scene0038_dino.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        
+        </div> -->
+      </div>
+    </div>
+    <!--/ Animation. -->
+    <h3 class="title is-4">Mesh Video</h3>
+        <div class="content has-text-justified">
+          <p>
+            We presnet the pointcloud video .
+          </p>
+        </div>
+        <div class="columns interpolation-video-column is-multiline">
+          <div class="column  ">
+            <video id="teaser" autoplay muted loop playsinline height="100%">
+              <source src="./static/videos/pointcloud.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+    <!-- <div class="column is-vcentered interpolation-panel ">
+      <div class="column interpolation-video-column">
+        <div class="columns interpolation-video-column is-multiline">
+          <div class="column is-4 ">
+            <div id="Mesh1-image-wrapper">
+              Loading...
+            </div>
+          </div>
+          <div class="column is-4 ">
+            <div id="Mesh2-image-wrapper">
+              Loading...
+            </div>
+          </div>
+          <div class="column is-4 ">
+            <div id="Mesh3-image-wrapper">
+              Loading...
+            </div>
+          </div>
+        </div>
+        <div class="columns is-centered is-multiline">
+          <div class="column is-4">
+            <p class="has-text-centered has-text-weight-bold is-size-5">Ground Truth</p>
+          </div>
+          <div class="column is-4">
+            <p class="has-text-centered has-text-weight-bold is-size-5">SDF</p>
+          </div>
+          <div class="column is-4">
+            <p class="has-text-centered has-text-weight-bold is-size-5">No-SDF</p>
+          </div>
+        </div>
+        <input class="slider is-full-width is-large is-info"
+               id="Mesh-slider"
+               step="1" min="0" max="30" value="0" type="range">
+      </div> -->
+      <!-- <div class="column is-3 has-text-centered"> -->
+        <!-- <img src="./static/images/interpolate_end.jpg"
+             class="interpolation-image"
+             alt="Interpolation end reference image."/>
+        <p class="is-bold">End Frame</p> -->
+      <!-- </div> -->
+   
+    <br>
+    
+    <!-- Concurrent Work. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            There's a lot of work about the realization of the semantic segmentation of 3D objects was introduced.
+          </p>
+          <p>
+            <a href="https://shuaifengzhi.com/Semantic-NeRF/">Semantic-NeRF</a> combes semantic, geometric and appearance co-encoding to render high-quality 2D semantic views.
+          </p>
+          <p>
+            <a href="https://www.albertpumarola.com/research/D-NeRF/index.html">DM-NeRF</a> optimizes semantic training by combining the idea of segmenting 3D BoNet with point cloud instances on the basis of 
+          </p>
+          <p>
+            this achieve semantic 3D supervision and improve the quality of semantic rendering.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Concurrent Work. -->
+
+  </div>
+</section>
+
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{park2021nerfies,
+  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+  title     = {Nerfies: Deformable Neural Radiance Fields},
+  journal   = {ICCV},
+  year      = {2021},
+}</code></pre>
+  </div>
+</section> -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is partially borrowed from  <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.Send feedback and questions to David Dou
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
