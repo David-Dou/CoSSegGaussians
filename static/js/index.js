@@ -1,12 +1,12 @@
 window.HELP_IMPROVE_VIDEOJS = false;
 
-var INTERP_BASE = "./static/interpolation";
+var INTERP_BASE = "./static/seg_video";
 var NUM_INTERP_FRAMES = 180;
 var MaskDINO_images = [];
 function preloadMaskDINOImages() {
   for (var i = 0; i < NUM_INTERP_FRAMES; i++) {
     padi = i.toString().padStart(3, '0')
-    var path = INTERP_BASE + '/maskdino_remap/' + padi + '_ins_mod_panop_remap.png';
+    var path = INTERP_BASE + '/sem_group/' +'mod_colored_010000_'+ padi + '.png';
     MaskDINO_images[i] = new Image();
     MaskDINO_images[i].src = path;
   }
@@ -21,7 +21,7 @@ var TensoRFLP_images = [];
 function preloadTensoRLPImages() {
   for (var i = 0; i < NUM_INTERP_FRAMES; i++) {
     padi = i.toString().padStart(3, '0')
-    var path = INTERP_BASE + '/stensorf_lp/' +'059999_'+ padi + '_panop.png';
+    var path = INTERP_BASE + '/pano_group/' +'mod_colored_010000_'+ padi + '.png';
     TensoRFLP_images[i] = new Image();
     TensoRFLP_images[i].src = path;
   }
@@ -32,27 +32,12 @@ function setTensoRFLPImage(i) {
   image_TensoRFLP.oncontextmenu = function() { return false; };
   $('#TensoRF_LP-image-wrapper').empty().append(image_TensoRFLP);
 }
-var Semantic_images = [];
-function preloadSemanticImages() {
-  for (var i = 0; i < NUM_INTERP_FRAMES; i++) {
-    p = i*3
-    padi = p.toString().padStart(3, '0')
-    var path = INTERP_BASE + '/sem_nerf/' +'vis_label_'+ padi + '_panop.png';
-    Semantic_images[i] = new Image();
-    Semantic_images[i].src = path;
-  }
-}
-function setSemanticImage(i) {
-  var image_Semantic = Semantic_images[i];
-  image_Semantic.ondragstart = function() { return false; };
-  image_Semantic.oncontextmenu = function() { return false; };
-  $('#Semantic-image-wrapper').empty().append(image_Semantic);
-}
+
 var DM_NeRF_images = [];
 function preloadDM_NeRFImages() {
   for (var i = 0; i < NUM_INTERP_FRAMES; i++) {
     padi = i.toString().padStart(3, '0')
-    var path = INTERP_BASE + '/dm_nerf/' +'instance_'+ padi + '_panop.png';
+    var path = INTERP_BASE + '/sem_ours/' +'mod_colored_010000_'+ padi + '.png';
     DM_NeRF_images[i] = new Image();
     DM_NeRF_images[i].src = path;
   }
@@ -67,7 +52,7 @@ var Panoptic_images = [];
 function preloadPanopticImages() {
   for (var i = 0; i < NUM_INTERP_FRAMES; i++) {
     padi = i.toString().padStart(3, '0')
-    var path = INTERP_BASE + '/panoptic_lifting/' + 'instance_'+ padi + '_panop.png';
+    var path = INTERP_BASE + '/pano_ours/' + 'mod_colored_010000_'+ padi + '.png';
     Panoptic_images[i] = new Image();
     Panoptic_images[i].src = path;
   }
@@ -78,21 +63,7 @@ function setPanopticImage(i) {
   image_Panoptic.oncontextmenu = function() { return false; };
   $('#Panoptic-image-wrapper').empty().append(image_Panoptic);
 }
-var Ours_images = [];
-function preloadOursImages() {
-  for (var i = 0; i < NUM_INTERP_FRAMES; i++) {
-    padi = i.toString().padStart(3, '0')
-    var path = INTERP_BASE + '/ours/'+'039999_' + padi + '_panop.png';
-    Ours_images[i] = new Image();
-    Ours_images[i].src = path;
-  }
-}
-function setOursImage(i) {
-  var image_Ours = Ours_images[i];
-  image_Ours.ondragstart = function() { return false; };
-  image_Ours.oncontextmenu = function() { return false; };
-  $('#Ours-image-wrapper').empty().append(image_Ours);
-}
+
 
 
 var Editing_Base = "./static/editing"
@@ -130,73 +101,22 @@ function setEditingImage2(i) {
   $('#Editing-image2-wrapper').empty().append(image_Editing2);
 }
 
-var GT_Base = "./static/interpolation/GT"
-var GT_images = [];
-function preloadGTImages() {
+var RGB_Base = "./static/seg_video/gt"
+var RGB_images = [];
+function preloadRGBImages() {
   for (var i = 0; i < NUM_INTERP_FRAMES; i++) {
-    var path = GT_Base + '/' + 'remap_vis_sem_instance_'+ String(i) +'_panop.png';
-    GT_images[i] = new Image();
-    GT_images[i].src = path;
+    padi = i.toString().padStart(3, '0')
+    var path = RGB_Base + '/' + 'gt_030000_'+ padi +'.png';
+    RGB_images[i] = new Image();
+    RGB_images[i].src = path;
   }
 }
 
-function setGTImage(i) {
-  var image_GT = GT_images[i];
-  image_GT.ondragstart = function() { return false; };
-  image_GT.oncontextmenu = function() { return false; };
-  $('#GT-image-wrapper').empty().append(image_GT);
-}
-var NUM_Mesh_FRAMES = 30;
-
-var Mesh1_Base = "./static/mesh/gt"
-var Mesh1_images = [];
-function preloadMesh1Images() {
-  for (var i = 0; i < NUM_Mesh_FRAMES; i++) {
-    var path = Mesh1_Base + '/' + 'snapshot'+ String(i) + '.png';
-    Mesh1_images[i] = new Image();
-    Mesh1_images[i].src = path;
-  }
-}
-
-function setMesh1Image(i) {
-  var image_Mesh1 = Mesh1_images[i];
-  image_Mesh1.ondragstart = function() { return false; };
-  image_Mesh1.oncontextmenu = function() { return false; };
-  $('#Mesh1-image-wrapper').empty().append(image_Mesh1);
-}
-
-var Mesh2_Base = "./static/mesh/sdf"
-var Mesh2_images = [];
-function preloadMesh2Images() {
-  for (var i = 0; i < NUM_Mesh_FRAMES; i++) {
-    var path = Mesh2_Base + '/' + 'snapshot'+ String(i) + '.png';
-    Mesh2_images[i] = new Image();
-    Mesh2_images[i].src = path;
-  }
-}
-
-function setMesh2Image(i) {
-  var image_Mesh2 = Mesh2_images[i];
-  image_Mesh2.ondragstart = function() { return false; };
-  image_Mesh2.oncontextmenu = function() { return false; };
-  $('#Mesh2-image-wrapper').empty().append(image_Mesh2);
-}
-
-var Mesh3_Base = "./static/mesh/no-sdf"
-var Mesh3_images = [];
-function preloadMesh3Images() {
-  for (var i = 0; i < NUM_Mesh_FRAMES; i++) {
-    var path = Mesh3_Base + '/' + 'snapshot'+ String(i) + '.png';
-    Mesh3_images[i] = new Image();
-    Mesh3_images[i].src = path;
-  }
-}
-
-function setMesh3Image(i) {
-  var image_Mesh3 = Mesh3_images[i];
-  image_Mesh3.ondragstart = function() { return false; };
-  image_Mesh3.oncontextmenu = function() { return false; };
-  $('#Mesh3-image-wrapper').empty().append(image_Mesh3);
+function setRGBImage(i) {
+  var image_RGB = RGB_images[i];
+  image_RGB.ondragstart = function() { return false; };
+  image_RGB.oncontextmenu = function() { return false; };
+  $('#RGB-image-wrapper').empty().append(image_RGB);
 }
 
 $(document).ready(function() {
@@ -246,27 +166,22 @@ $(document).ready(function() {
     }, false);*/
     preloadMaskDINOImages();
     preloadTensoRLPImages();
-    preloadSemanticImages();
     preloadDM_NeRFImages();
     preloadPanopticImages();
-    preloadOursImages();
-    preloadGTImages();
+ 
+    preloadRGBImages();
     $('#interpolation-slider').on('input', function(event) {
       setMaskDINOImage(this.value);
       setTensoRFLPImage(this.value);
-      setSemanticImage(this.value);
       setDM_NeRFImage(this.value);
       setPanopticImage(this.value);
-      setOursImage(this.value);
-      setGTImage(this.value);
+      setRGBImage(this.value);
     });
     setMaskDINOImage(0);
     setTensoRFLPImage(0);
-    setSemanticImage(0);
     setDM_NeRFImage(0);
     setPanopticImage(0);
-    setOursImage(0);
-    setGTImage(0);
+    setRGBImage(0);
     $('#interpolation-slider').prop('max', NUM_INTERP_FRAMES - 1);
     
     bulmaSlider.attach();
@@ -299,34 +214,33 @@ $(document).ready(function() {
     $('#Editing-slider1').prop('max', NUM_Editing_FRAMES2 - 1);
     bulmaSlider.attach();
 
-    preloadMesh1Images();
-    preloadMesh2Images();
-    preloadMesh3Images();
-    $('#Mesh-slider').on('input', function(event) {
-      var count_mesh = this.value
-      setMesh1Image(count_mesh);
-      setMesh2Image(count_mesh);
-      setMesh3Image(count_mesh);
-    });
-    setMesh1Image(0);
-    setMesh2Image(0);
-    setMesh3Image(0);
-    $('#Mesh-slider').prop('max', NUM_Mesh_FRAMES - 1);
-    bulmaSlider.attach();
+    
 
     const changeImageBtn1 = document.querySelector("#change-image-btn1");
     const changeImageBtn2 = document.querySelector("#change-image-btn2");
     // 为按钮元素添加点击事件监听器
     changeImageBtn1.addEventListener("click", function() {
       // 更换输出的图片
-      const outputImg1 = document.querySelector("#output-img1");
-      outputImg1.src = "./static/editing/erasing.png";
+      const outputImg1a1 = document.querySelector("#output-img1a1");
+      outputImg1a1.src = "./static/editing/GS_office.png";
+      const outputImg1a2 = document.querySelector("#output-img1a2");
+      outputImg1a2.src = "./static/editing/GS_office_detail.png";
+      const outputImg1b1 = document.querySelector("#output-img1b1");
+      outputImg1b1.src = "./static/editing/Ours_office.png";
+      const outputImg1b2 = document.querySelector("#output-img1b2");
+      outputImg1b2.src = "./static/editing/Ours_office_detail.png";
     });
 
     changeImageBtn2.addEventListener("click", function() {
       // 更换输出的图片
-      const outputImg2 = document.querySelector("#output-img2");
-      outputImg2.src = "./static/editing/erasing_room0.png";
+      const outputImg2a1 = document.querySelector("#output-img2a1");
+      outputImg2a1.src = "./static/editing/GS_room.png";
+      const outputImg2a2 = document.querySelector("#output-img2a2");
+      outputImg2a2.src = "./static/editing/GS_room_detail.png";
+      const outputImg2b1 = document.querySelector("#output-img2b1");
+      outputImg2b1.src = "./static/editing/Ours_room.png";
+      const outputImg2b2 = document.querySelector("#output-img2b2");
+      outputImg2b2.src = "./static/editing/Ours_room_detail.png";
     });
     // const changeImageBtn = document.querySelector("#change-image-btn");
 
