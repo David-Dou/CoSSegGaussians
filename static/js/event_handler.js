@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', domReady);
                 textPosition: "bottom"
 
             });
+            new Dics({
+                container: document.querySelectorAll('.b-dics')[2],
+                hideTexts: false,
+                textPosition: "bottom"
+
+            });
         }
 
         function largeSceneEvent(idx) {
