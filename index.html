@@ -321,8 +321,25 @@ As we design our method based on the recent 3D Gaussian Splatting which is able 
             step="1" min="0" max="180" value="0" type="range">
           </div>
         </div>
-
-
+        <br>
+        <h3 class="title is-4">Segmented 3D Gaussians</h3>
+        <div class="content has-text-justified">
+<!--           <p> -->
+<!--             We presnet the pointcloud video . -->
+<!--           </p> -->
+        </div>
+        <div class="container">
+        <div class="columns is-centered is-vcentered"> 
+          <div class="column is-8   is-offset-2">
+            
+            <video id="teaser" autoplay muted loop playsinline center style="width: 80%;">
+              <source src="./static/videos/pointcloud_sel_new.mp4"
+                      type="video/mp4"> 
+            </video>
+          </div>
+         </div>
+        </div>
+        <br>
       <h3 class="title is-4">Scene Manipulation</h3>
         <div class="content has-text-justified">
           <p>
@@ -461,29 +478,24 @@ As we design our method based on the recent 3D Gaussian Splatting which is able 
           </p>
         </div>
         <!--/ DINO. -->
-        <div class="columns is-vcentered ">
-          <div class="column  has-text-centered ">
-            <video class="video" width="100%" id="xyalias6" loop playsinline autoplay muted src="static/videos/rgb_vs_feature2.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
-            <canvas height=0 class="videoMerge" id="xyalias6Merge"></canvas>
-        
-            
-          </div>
+      
+        <div class="column is-8 is-offset-2 ">
+            <div class="b-dics" style="width: 100%; font-weight: 600;">
+                <img src="static/videos/rgb_sel.gif" >
+                <img src="static/videos/feature_sel.gif" >
+                <!-- <img src="static/videos/pano.gif" alt="Panoptic"> -->
+            </div>
+         
+          <!-- <div class="column is-6">
+              <div class="b-dics" style="width: 100%; font-weight: 600;">
+                <img src="static/videos/rgb_sel.gif" >
+                <img src="static/videos/feature_sel.gif" >
+                
+              </div>
+          </div> -->
         </div>    
     <!--/ Animation. -->
-    <h3 class="title is-4">Segmented 3D Gaussians</h3>
-        <div class="content has-text-justified">
-<!--           <p> -->
-<!--             We presnet the pointcloud video . -->
-<!--           </p> -->
-        </div>
-<!--         <div class="columns interpolation-video-column is-multiline"> -->
-<!--           <div class="column is-centered "> -->
-<!--             <video id="teaser" autoplay muted loop playsinline center height="70%"> -->
-<!--               <source src="./static/videos/pointcloud.mp4" -->
-<!--                       type="video/mp4"> -->
-<!--             </video> -->
-<!--           </div> -->
-<!--         </div> -->
+    
     <br>
     
     <!-- Related works. -->
