@@ -268,255 +268,197 @@
 <section class="section">
   <div class="container is-max-desktop">
     <!-- Animation. -->
-      <h2 class="title is-3">Animation</h2>
-      <h3 class="title is-4">Scene Segmentation</h3>
-        <div class="content has-text-justified">
-          <p>
-              Use the slider here to observe semantic and panoptic segmentation results from different viewpoints of Gaussian Grouping and our method.
-          </p>
-         </div>
-        <br/>
-    
-        <div class="columns is-vcentered interpolation-panel  ">
-          <div class="column is-one-third ">
-            <div id="RGB-image-wrapper">
-              Loading...
-            </div>
-            <p class="has-text-centered has-text-weight-bold is-size-5">RGB</p>
+    <h2 class="title is-3">Animation</h2>
+    <h3 class="title is-4">Scene Segmentation</h3>
+      <div class="content has-text-justified">
+        <p>
+          Use the slider to observe rendered semantic & panoptic segmentation maps from various viewpoints 
+          of different methods.
+        </p>
+       </div>
+      <br/>
+  
+      <div class="columns is-vcentered interpolation-panel  ">
+        <div class="column is-one-third ">
+          <div id="RGB-image-wrapper">
+            Loading...
           </div>
-          <div class="column is-two-three is-multiline">
-            <div class="columns  ">
-              <div class="column  is-offset-0 ">
-                <div id="MaskDINO-image-wrapper">
-                  Loading...
-                </div>
-                <p class="has-text-centered has-text-weight-bold is-size-5">Semantic(Gaussian Grouping)</p>
-              </div>
-              <div class="column  is-offset-0 ">
-                <div id="TensoRF_LP-image-wrapper">
-                  Loading...
-                </div>
-                <p class="has-text-centered has-text-weight-bold is-size-5">Panoptic(Gaussian Grouping)</p>
-              </div>
-            </div>
-            <div class="columns ">
-              <div class="column  is-offset-0 ">
-                <div id="DM-image-wrapper">
-                  Loading...
-                </div>
-                <p class="has-text-centered has-text-weight-bold is-size-5">Semantic(Ours)</p>
-              </div>
-              <div class="column  is-offset-0 ">
-                <div id="Panoptic-image-wrapper">
-                  Loading...
-                </div>
-                <p class="has-text-centered has-text-weight-bold is-size-5">Panoptic(Ours)</p>
-              </div>
-            </div>
-            <input class="slider is-full-width is-large is-info"
-            id="interpolation-slider"
-            step="1" min="0" max="180" value="0" type="range">
-          </div>
+          <p class="has-text-centered has-text-weight-bold is-size-5">RGB</p>
         </div>
-        <br>
-        <h3 class="title is-4">Segmented 3D Gaussians</h3>
-        <div class="content has-text-justified">
+        <div class="column is-two-three is-multiline">
+          <div class="columns  ">
+            <div class="column  is-offset-0 ">
+              <div id="MaskDINO-image-wrapper">
+                Loading...
+              </div>
+              <p class="has-text-centered has-text-weight-bold is-size-5">Semantic(Gaussian Grouping)</p>
+            </div>
+            <div class="column  is-offset-0 ">
+              <div id="TensoRF_LP-image-wrapper">
+                Loading...
+              </div>
+              <p class="has-text-centered has-text-weight-bold is-size-5">Panoptic(Gaussian Grouping)</p>
+            </div>
+          </div>
+          <div class="columns ">
+            <div class="column  is-offset-0 ">
+              <div id="DM-image-wrapper">
+                Loading...
+              </div>
+              <p class="has-text-centered has-text-weight-bold is-size-5">Semantic(Ours)</p>
+            </div>
+            <div class="column  is-offset-0 ">
+              <div id="Panoptic-image-wrapper">
+                Loading...
+              </div>
+              <p class="has-text-centered has-text-weight-bold is-size-5">Panoptic(Ours)</p>
+            </div>
+          </div>
+          <input class="slider is-full-width is-large is-info"
+          id="interpolation-slider"
+          step="1" min="0" max="180" value="0" type="range">
+        </div>
+      </div>
+      <br>
+
+      <h3 class="title is-4">Segmented 3D Gaussians</h3>
+      <div class="content has-text-justified">
 <!--           <p> -->
 <!--             We presnet the pointcloud video . -->
 <!--           </p> -->
+      </div>
+      <div class="container">
+      <div class="columns is-centered is-vcentered"> 
+        <div class="column is-8   is-offset-2">
+          
+          <video id="teaser" autoplay muted loop playsinline center style="width: 80%;">
+            <source src="./static/videos/pointcloud_sel_new.mp4"
+                    type="video/mp4"> 
+          </video>
         </div>
-        <div class="container">
-        <div class="columns is-centered is-vcentered"> 
-          <div class="column is-8   is-offset-2">
-            
-            <video id="teaser" autoplay muted loop playsinline center style="width: 80%;">
-              <source src="./static/videos/pointcloud_sel_new.mp4"
-                      type="video/mp4"> 
-            </video>
+       </div>
+      </div>
+      <br>
+
+      <h3 class="title is-4">DINO Feature Field</h3>
+      <div class="content has-text-justified">
+        <p>
+          We've visualized the feature field obtained through DINO feature unprojection.
+        </p>
+      </div>
+      <!--/ DINO. -->
+    
+      <div class="column is-8 is-offset-2 ">
+          <div class="b-dics" style="width: 100%; font-weight: 600;">
+              <img src="static/videos/rgb_sel.gif" >
+              <img src="static/videos/feature_sel.gif" >
+              <!-- <img src="static/videos/pano.gif" alt="Panoptic"> -->
           </div>
-         </div>
-        </div>
-        <br>
-      <h3 class="title is-4">Scene Manipulation</h3>
-        <div class="content has-text-justified">
-          <p>
-            We can also animate the scene manipulation results. 
-<!--             Use the button here to see the erasing results. -->
-          </p>
-        </div>
-        <br>
-        <div class="columns is-vcentered interpolation-panel">
-          <div class="column  has-text-centered">
-            <h4 class="title is-4">office0</h4>
-            <div class="columns is-centered ">
-              <div class="column is-one-ha ">
-                <p class="has-text-centered has-text-weight-bold is-size-5">Ground Truth</p>
-                <br>
-                <img id = "output-img1Ga"
-                  src="./static/editing/GT_office.png"
-                  alt="Erasing-image"
-                  >
-                  <img id = "output-img1Gb"
-                  src="./static/editing/GT_office_detail.png"
-                  alt="Erasing-image"
-                  >
-              </div>
-              <div class="column is-one-third">
-                <p class="has-text-centered has-text-weight-bold is-size-5">Gaussian </p>
-                <br>
-                <img id = "output-img1a1"
-                  src="./static/editing/GT_office.png"
-                  alt="Erasing-image"
-                  >
-                  <img id = "output-img1a2"
-                  src="./static/editing/GT_office_detail.png"
-                  alt="Erasing-image"
-                  >
-              </div>
-              <div class="column is-one-third">
-                <p class="has-text-centered has-text-weight-bold is-size-5">Ours</p>
-                <br>
-                <img id = "output-img1b1"
-                  src="./static/editing/GT_office.png"
-                  alt="Erasing-image"
-                  >
-                  <img id = "output-img1b2"
-                  src="./static/editing/GT_office_detail.png"
-                  alt="Erasing-image"
-                  >
-              </div>
-            </div>
-            <button id="change-image-btn1" class="button is-medium is-info has-text-weight-bold">Editing</button> 
-          </div>
-          <div class="column is-6 has-text-centered">
-            <h4 class="title is-size-4">room0</h4>
-            <div class="columns is-centered ">
-              <div class="column is-4">
-                <p class="has-text-centered has-text-weight-bold is-size-5">Ground Truth</p>
-                <br>
-                <img id = "output-img2Ga"
-                src="./static/editing/GT_room.png"
-                alt="Erasing-image"
-                >
-                
-                <img id = "output-img2Gb"
-                src="./static/editing/GT_room_detail.png"
-                alt="Erasing-image"
-                >
-              </div>
-              <div class="column is-one-third">
-                <p class="has-text-centered has-text-weight-bold is-size-5">Gaussian</p>
-                <br>
-                <img id = "output-img2a1"
-                src="./static/editing/GT_room.png"
-                alt="Erasing-image"
-                >
-                
-                <img id = "output-img2a2"
-                src="./static/editing/GT_room_detail.png"
-                alt="Erasing-image"
-                >
-              </div>
-              <div class="column is-one-third">
-                <p class="has-text-centered has-text-weight-bold is-size-5">Ours</p>
-                <br>
-                <img id = "output-img2b1"
-                src="./static/editing/GT_room.png"
-                alt="Erasing-image"
-                >
-                
-                <img id = "output-img2b2"
-                src="./static/editing/GT_room_detail.png"
-                alt="Erasing-image"
-                >
-              </div>
+       
+        <!-- <div class="column is-6">
+            <div class="b-dics" style="width: 100%; font-weight: 600;">
+              <img src="static/videos/rgb_sel.gif" >
+              <img src="static/videos/feature_sel.gif" >
               
             </div>
-            <button id="change-image-btn2" class="button is-medium is-info has-text-weight-bold">Editing</button> 
-          </div>
-        </div> 
+        </div> -->
+      </div>   
+      <br>
       
-
-
-
-        <h3 class="title is-3">Language-guided Editing</h3>
-        <div class="content has-text-justified">
-          <p>
-            The nature of explicit scene representation, coupled with feature fields, enables precise  editing in 3D for any real-world scene prompted by natural language.
-          </p>
-        </div>
-          <!-- <div class="column is-vcentered">
-            <div class="column  ">
-              <h4 class="title is-4">Language-guided Editing1</h4>
-              <video class="video" width="10%" id="xyalias1" loop playsinline autoplay muted src="static/videos/rgb_vs_feature2.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
-              <canvas height=0 class="videoMerge" id="xyalias1Merge"></canvas>
-            </div>
-            <div class="column  ">
-              <h4 class="title is-4">Language-guided Editing2</h4>
-              <video class="video" width="10%" id="xyalias2" loop playsinline autoplay muted src="static/videos/rgb_vs_feature2.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
-              <canvas height=0 class="videoMerge" id="xyalias2Merge"></canvas>
-            </div>
-            <div class="column ">
-              <h4 class="title is-4">Language-guided Editing3</h4>
-              <video class="video" width="10%" id="xyalias3" loop playsinline autoplay muted src="static/videos/rgb_vs_feature2.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
-              <canvas height=0 class="videoMerge" id="xyalias3Merge"></canvas>
-            </div>
-            <div class="column ">
-              <h4 class="title is-4">Language-guided Editing4</h4>
-              <video class="video" width="10%" id="xyalias4" loop playsinline autoplay muted src="static/videos/rgb_vs_feature2.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
-              <canvas height=0 class="videoMerge" id="xyalias4Merge"></canvas>
-            </div> 
-           </div> -->
-        
-        <h3 class="title is-3">DINO Feature Fields</h3>
-        <div class="content has-text-justified">
-          <p>
-            We visualize feature fields distilled from DINO. Scenes are from Replica .
-          </p>
-        </div>
-        <!--/ DINO. -->
-      
-        <div class="column is-8 is-offset-2 ">
+    <h3 class="title is-4">Application</h3>
+    <h4 class="title is-5">Scene Manipulation</h4>
+      <div class="content has-text-justified">
+        <p>
+          Scene manipulation results are provided as an application of our method. 
+        </p>
+      </div>
+      <div class="columns is-vcentered interpolation-panel">
+        <div class="column  has-text-centered">
+          <h4 class="title is-4">Translating of Seat</h4>
             <div class="b-dics" style="width: 100%; font-weight: 600;">
-                <img src="static/videos/rgb_sel.gif" >
-                <img src="static/videos/feature_sel.gif" >
+                <img src="static/videos/edit_office_gt.gif">
+                <img src="static/videos/edit_office.gif" >
                 <!-- <img src="static/videos/pano.gif" alt="Panoptic"> -->
-            </div>
-         
-          <!-- <div class="column is-6">
-              <div class="b-dics" style="width: 100%; font-weight: 600;">
-                <img src="static/videos/rgb_sel.gif" >
-                <img src="static/videos/feature_sel.gif" >
-                
-              </div>
-          </div> -->
-        </div>    
-    <!--/ Animation. -->
+            </div>  
+        </div>
+        <div class="column has-text-centered">
+          <h4 class="title is-size-4">Removal of Stool</h4>
+          <div class="b-dics" style="width: 100%; font-weight: 600;">
+            <img src="static/videos/edit_room_gt.gif" >
+            <img src="static/videos/edit_room.gif" >
+            <!-- <img src="static/videos/pano.gif" alt="Panoptic"> -->
+          </div>
+        </div>
+      </div> 
+    
+      <h4 class="title is-5">Language-guided Segmentation</h4>
+      <div class="content has-text-justified">
+        <p>
+          Language-guided segmentation results are provided as another application, based on 
+          2D language-guided segmentation method 
+          <a href="https://arxiv.org/abs/2304.10597">Text2Seg</a>. 
+        </p>
+      </div>
+      <div class="columns is-vcentered interpolation-panel">
+        <div class="column  has-text-centered">
+          <h4 class="title is-4">Text Prompt: <i>Blue Toy</i> </h4>
+            <div class="b-dics" style="width: 100%; font-weight: 600;">
+                <img src="static/videos/seg_office_gt.gif">
+                <img src="static/videos/seg_office.gif" >
+                <!-- <img src="static/videos/pano.gif" alt="Panoptic"> -->
+            </div>  
+        </div>
+        <div class="column has-text-centered">
+          <h4 class="title is-size-4">Text Prompt: <i>Potted Plant</i> </h4>
+          <div class="b-dics" style="width: 100%; font-weight: 600;">
+            <img src="static/videos/seg_room_gt.gif" >
+            <img src="static/videos/seg_room.gif" >
+            <!-- <img src="static/videos/pano.gif" alt="Panoptic"> -->
+          </div>
+        </div>
+      </div> 
+        <!-- <div class="column is-vcentered">
+          <div class="column  ">
+            <h4 class="title is-4">Language-guided Editing1</h4>
+            <video class="video" width="10%" id="xyalias1" loop playsinline autoplay muted src="static/videos/rgb_vs_feature2.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
+            <canvas height=0 class="videoMerge" id="xyalias1Merge"></canvas>
+          </div>
+          <div class="column  ">
+            <h4 class="title is-4">Language-guided Editing2</h4>
+            <video class="video" width="10%" id="xyalias2" loop playsinline autoplay muted src="static/videos/rgb_vs_feature2.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
+            <canvas height=0 class="videoMerge" id="xyalias2Merge"></canvas>
+          </div>
+          <div class="column ">
+            <h4 class="title is-4">Language-guided Editing3</h4>
+            <video class="video" width="10%" id="xyalias3" loop playsinline autoplay muted src="static/videos/rgb_vs_feature2.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
+            <canvas height=0 class="videoMerge" id="xyalias3Merge"></canvas>
+          </div>
+          <div class="column ">
+            <h4 class="title is-4">Language-guided Editing4</h4>
+            <video class="video" width="10%" id="xyalias4" loop playsinline autoplay muted src="static/videos/rgb_vs_feature2.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
+            <canvas height=0 class="videoMerge" id="xyalias4Merge"></canvas>
+          </div> 
+         </div> -->
+  <!--/ Animation. -->
     
     <br>
-    
-    <!-- Related works. -->
+
+    <!-- Concurrent Work. -->
     <!-- <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Related Links</h2>
 
         <div class="content has-text-justified">
           <p>
-            There's a lot of work about the realization of the semantic segmentation of 3D objects was introduced.
-          </p>
-          <p>
-            <a href="https://shuaifengzhi.com/Semantic-NeRF/">Semantic-NeRF</a> combes semantic, geometric and appearance co-encoding to render high-quality 2D semantic views.
-          </p>
-          <p>
-            <a href="https://www.albertpumarola.com/research/D-NeRF/index.html">DM-NeRF</a> optimizes semantic training by combining the idea of segmenting 3D BoNet with point cloud instances on the basis of 
-          </p>
-          <p>
-            this achieve semantic 3D supervision and improve the quality of semantic rendering.
+            There are some related works focusing on 3D scene segmentation, 
+            such as <a href="https://arxiv.org/abs/2103.15875">Semantic-NeRF</a>, 
+            <a href="https://arxiv.org/abs/2208.07227">DM-NeRF</a>, 
+            <a href="https://arxiv.org/abs/2212.09802">Panoptic-Lifting</a>, etc. 
           </p>
         </div>
       </div>
     </div> -->
-
+    <!--/ Concurrent Work. -->
 
   </div>
 </section>
@@ -534,12 +476,11 @@
   </div>
 </section> -->
 
-
 <footer class="footer">
   <div class="container">
     <div class="content has-text-centered">
       
-      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+      <a class="icon-link" href="https://github.com/David-Dou" class="external-link" disabled>
         <i class="fab fa-github"></i>
       </a>
     </div>
@@ -547,14 +488,15 @@
       <div class="column is-8">
         <div class="content">
           <p>
-            This website is partially borrowed from  <a
-              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.Send feedback and questions to David Dou
+            This website is partially borrowed from  
+            <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. 
+            Send feedback and questions to 
+            <a href="https://github.com/David-Dou">David Dou</a>
           </p>
         </div>
       </div>
     </div>
   </div>
 </footer>
-
 </body>
 </html>
