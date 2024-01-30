@@ -19,6 +19,30 @@ document.addEventListener('DOMContentLoaded', domReady);
                 textPosition: "bottom"
 
             });
+            new Dics({
+                container: document.querySelectorAll('.b-dics')[3],
+                hideTexts: false,
+                textPosition: "bottom"
+
+            });
+            new Dics({
+                container: document.querySelectorAll('.b-dics')[4],
+                hideTexts: false,
+                textPosition: "bottom"
+
+            });
+            new Dics({
+                container: document.querySelectorAll('.b-dics')[5],
+                hideTexts: false,
+                textPosition: "bottom"
+
+            });
+            new Dics({
+                container: document.querySelectorAll('.b-dics')[6],
+                hideTexts: false,
+                textPosition: "bottom"
+
+            });
         }
 
         function largeSceneEvent(idx) {
