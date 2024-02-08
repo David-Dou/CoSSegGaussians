@@ -218,6 +218,7 @@ $(document).ready(function() {
 
     const changeImageBtn1 = document.querySelector("#change-image-btn1");
     const changeImageBtn2 = document.querySelector("#change-image-btn2");
+
     // 为按钮元素添加点击事件监听器
     changeImageBtn1.addEventListener("click", function() {
       // 更换输出的图片
@@ -230,7 +231,6 @@ $(document).ready(function() {
       const outputImg1b2 = document.querySelector("#output-img1b2");
       outputImg1b2.src = "./static/editing/Ours_office_detail.png";
     });
-
     changeImageBtn2.addEventListener("click", function() {
       // 更换输出的图片
       const outputImg2a1 = document.querySelector("#output-img2a1");
@@ -242,6 +242,34 @@ $(document).ready(function() {
       const outputImg2b2 = document.querySelector("#output-img2b2");
       outputImg2b2.src = "./static/editing/Ours_room_detail.png";
     });
+
+    const resetImageBtn1 = document.querySelector("#reset-image-btn1");
+    const resetImageBtn2 = document.querySelector("#reset-image-btn2");
+    // 为按钮元素添加点击事件监听器
+    resetImageBtn1.addEventListener("click", function() {
+      // 更换输出的图片
+      const outputImg1a1 = document.querySelector("#output-img1a1");
+      outputImg1a1.src = "./static/editing/GT_office.png";
+      const outputImg1a2 = document.querySelector("#output-img1a2");
+      outputImg1a2.src = "./static/editing/GT_office_detail.png";
+      const outputImg1b1 = document.querySelector("#output-img1b1");
+      outputImg1b1.src = "./static/editing/GT_office.png";
+      const outputImg1b2 = document.querySelector("#output-img1b2");
+      outputImg1b2.src = "./static/editing/GT_office_detail.png";
+    });
+    // 为按钮元素添加点击事件监听器
+    resetImageBtn2.addEventListener("click", function() {
+      // 更换输出的图片
+      const outputImg2a1 = document.querySelector("#output-img2a1");
+      outputImg2a1.src = "./static/editing/GT_room.png";
+      const outputImg2a2 = document.querySelector("#output-img2a2");
+      outputImg2a2.src = "./static/editing/GT_room_detail.png";
+      const outputImg2b1 = document.querySelector("#output-img2b1");
+      outputImg2b1.src = "./static/editing/GT_room.png";
+      const outputImg2b2 = document.querySelector("#output-img2b2");
+      outputImg2b2.src = "./static/editing/GT_room_detail.png";
+    });
+
     // const changeImageBtn = document.querySelector("#change-image-btn");
 
     // //  为按钮元素添加点击事件监听器
